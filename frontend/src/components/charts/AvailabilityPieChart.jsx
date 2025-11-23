@@ -1,0 +1,23 @@
+import React from 'react';
+import {PieChart,Pie,Cell,Tooltip,Legend,ResponsiveContainer} from 'recharts';
+const COLORS=['#16a34a','#ef4444']; // green, red
+export default function AvailabilityPieChart({inStockCount=0,outStockCount=0}) 
+{
+  const data=[
+    {name:'In Stock',value:inStockCount},
+    {name:'Out of Stock',value:outStockCount},
+  ];
+  return (
+    <div style={{width:'100%',height:300}}>
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie dataKey="value" data={data} nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+            {data.map((entry, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
