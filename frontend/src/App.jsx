@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+import React from 'react';
+import {Routes,Route,Link } from 'react-router-dom';
+import StorePage from './pages/StorePage';
+import InventoryPage from './pages/InventoryPage';
+export default function App() 
+{
+  return(
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold">Online Bookstore</h1>
+          <nav className="space-x-4">
+            <Link to="/" className="text-gray-700 hover:text-blue-700">Store</Link>
+            <Link to="/inventory" className="text-gray-700 hover:text-blue-700">Inventory</Link>
+          </nav>
+        </div>
+      </header>
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        <Routes>
+          <Route path="/" element={<StorePage />} />
+          <Route path="/inventory" element={<InventoryPage />} />
+        </Routes>
+      </main>
+      <footer className="text-center text-sm text-gray-500 py-6">
+        &copy; 2025
+      </footer>
+    </div>
+  );
 }
-
-export default App
