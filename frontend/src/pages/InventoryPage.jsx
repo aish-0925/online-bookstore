@@ -4,6 +4,7 @@ import {fetchBooks} from '../api/bookApi';
 import InventoryTable from '../components/inventory/InventoryTable';
 import GenreBarChart from '../components/charts/GenreBarChart';
 import AvailabilityPieChart from '../components/charts/AvailabilityPieChart';
+import AddBookModal from '../components/inventory/AddBookModal'; 
 export default function InventoryPage() 
 {
   const [books,setBooks]=useState([]);
@@ -17,7 +18,7 @@ export default function InventoryPage()
     {
       //fetch many items: backend default limit is high; request a large limit to get full set
       const res=await fetchBooks({page:1,limit:1000});
-      setBooks(res.data);
+      setBooks(res.data||[]);
     } 
     catch(err) 
     {
@@ -41,12 +42,26 @@ export default function InventoryPage()
     }
     return acc;
   },{});
-  const genreData=Object.entries(genreMap).map(([genre, value])=>({ genre, value }));
+  const genreData=Object.entries(genreMap).map(([genre,value])=>({genre,value}));
   return(
     <div className="p-6">
+      <div className="flex items-center justify-between mb-4">
       <h1 className="text-2xl font-bold mb-4">Inventory Management</h1>
+      <div className="flex items-center gap-3">
+          {/* AddBookModal will call onAdded to refresh */}
+          <AddBookModal onAdded={loadAll} />
+
+          <button
+            onClick={loadAll}
+            className="px-3 py-1 border rounded text-sm bg-white hover:bg-gray-50"
+            title="Refresh inventory"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
       {error && <div className="text-red-600 mb-4">{error}</div>}
-      {loading ? <div>Loading inventory…</div>:<InventoryTable books={books}/>}
+      {loading ? <div>Loading inventory…</div>:<InventoryTable books={books} onUpdated={loadAll}/>}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded shadow">
           <h3 className="font-semibold mb-2">Available Books by Genre</h3>
