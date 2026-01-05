@@ -1,14 +1,13 @@
-const mysql=require('mysql2');
-//read database credentials from environment variables
-const pool=mysql.createPool(
-{
-  host:process.env.DB_HOST||'localhost',
-  user:process.env.DB_USER||'root',
-  password:process.env.DB_PASS||'',
-  database:process.env.DB_NAME||'online_bookstore',
-  waitForConnections:true,
-  connectionLimit:10,
-  queueLimit:0,
-}
-);
-module.exports=pool.promise();
+import mongoose from "mongoose";
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
